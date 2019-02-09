@@ -1,5 +1,9 @@
 package ru.cerrenesi.todolist;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TextArea;
 import ru.cerrenesi.todolist.datamodel.TodoItem;
 
 import java.time.LocalDate;
@@ -10,6 +14,12 @@ import java.util.List;
 public class Controller {
 
     private List<TodoItem> todoItems;
+
+    @FXML
+    private ListView<TodoItem> todoListView;
+    @FXML
+    private TextArea itemDetailsTextArea;
+
     public void initialize() {
 
         TodoItem item1 = new TodoItem("Mail birthday card", "Buy a 30th birthday card for John",
@@ -30,6 +40,21 @@ public class Controller {
         todoItems.add(item4);
         todoItems.add(item5);
 
+        todoListView.getItems().setAll(todoItems);
+        todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
     }
+
+    @FXML
+    public void handleClickListView() {
+        TodoItem item = todoListView.getSelectionModel().getSelectedItem();
+        StringBuilder sb = new StringBuilder(item.getDetails());
+        sb.append("\n\n\n\n");
+        sb.append("Due: ");
+        sb.append(item.getDeadline().toString());
+        itemDetailsTextArea.setText(sb.toString());
+
+    }
+
 
 }
