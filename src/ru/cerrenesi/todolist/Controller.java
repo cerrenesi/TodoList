@@ -3,13 +3,14 @@ package ru.cerrenesi.todolist;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextArea;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import ru.cerrenesi.todolist.datamodel.TodoData;
 import ru.cerrenesi.todolist.datamodel.TodoItem;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +27,8 @@ public class Controller {
     private TextArea itemDetailsTextArea;
     @FXML
     private Label deadLineLabel;
+    @FXML
+    private BorderPane mainBorderPane;
 
     public void initialize() {
         ChangeListener<TodoItem> listener = (ObservableValue<? extends TodoItem> observable, TodoItem oldValue, TodoItem newValue) -> {
@@ -44,6 +47,20 @@ public class Controller {
 
         todoListView.getSelectionModel().selectFirst();
     }
+
+    public void showNewItemDialog() {
+        var dialog = new Dialog<ButtonType>();
+        dialog.initOwner(mainBorderPane.getScene().getWindow());
+        try{
+            Parent root = FXMLLoader.load(getClass().getResource("todoItemDialog.fxml"));
+            dialog.getDialogPane().setContent(root);
+        }catch (IOException e) {
+            System.out.println("Couldn't load the dialog");
+            e.printStackTrace();
+            return;
+        }
+    }
+
 
 //    @FXML
 //    public void handleClickListView() {
