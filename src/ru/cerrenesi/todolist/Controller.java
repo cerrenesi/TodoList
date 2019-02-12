@@ -39,12 +39,13 @@ public class Controller {
 
         todoListView.getSelectionModel().selectedItemProperty().addListener(listener);
 
-        todoListView.getItems().setAll(TodoData.getInstance().getTodoItems());
+        todoListView.setItems(TodoData.getInstance().getTodoItems());
         todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         todoListView.getSelectionModel().selectFirst();
     }
 
+    @FXML
     public void showNewItemDialog() {
         var dialog = new Dialog<ButtonType>();
         dialog.initOwner(mainBorderPane.getScene().getWindow());
@@ -67,11 +68,7 @@ public class Controller {
         if(result.isPresent() && result.get() == ButtonType.OK) {
             DialogController controller = fxmlLoader.getController();
             TodoItem newItem = controller.processResult();
-            todoListView.getItems().setAll(TodoData.getInstance().getTodoItems());
             todoListView.getSelectionModel().select(newItem);
-            System.out.println("OK pressed");
-        }else {
-            System.out.println("Cancel pressed");
         }
 
     }
